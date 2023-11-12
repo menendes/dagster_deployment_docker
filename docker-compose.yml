@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.9"
 
 services:
   # This service runs the postgres DB used by dagster for run storage, schedule storage,
@@ -27,8 +27,17 @@ services:
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
       DAGSTER_POSTGRES_DB: "postgres_db"
       DAGSTER_CURRENT_IMAGE: "pipeline-x"
+      AWS_ACCESS_KEY_ID: "yourAWSKeyID"
+      AWS_SECRET_ACCESS_KEY: "yourAWSSecretAccessKey"
+      DATABASE_IP: "192.168.136.166"
+      DATABASE_PORT: 5432
+      DATABASE_USER: "etl_user"
+      DATABASE_PASSWORD: "etl_password"
+      DATABASE_NAME: "etl_db"
     networks:
       - dagster_network
+    volumes:
+      - /opt/dagster/dagster_home:/tmp/dagster-data
 
   pipeline_y:
     image: pipeline-y
@@ -38,6 +47,13 @@ services:
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
       DAGSTER_POSTGRES_DB: "postgres_db"
       DAGSTER_CURRENT_IMAGE: "pipeline-y"
+      AWS_ACCESS_KEY_ID: "yourAWSKeyID"
+      AWS_SECRET_ACCESS_KEY: "yourAWSSecretAccessKey"
+      DATABASE_IP: "192.168.136.166"
+      DATABASE_PORT: 5432
+      DATABASE_USER: "etl_user"
+      DATABASE_PASSWORD: "etl_password"
+      DATABASE_NAME: "etl_db"
     networks:
       - dagster_network
 
@@ -63,7 +79,7 @@ services:
       DAGSTER_POSTGRES_USER: "postgres_user"
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
       DAGSTER_POSTGRES_DB: "postgres_db"
-    volumes: # Make docker client accessible so we can terminate containers from the webserver
+    volumes: # Make docker client accessible, so we can terminate containers from the webserver
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
     networks:
@@ -86,7 +102,14 @@ services:
       DAGSTER_POSTGRES_USER: "postgres_user"
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
       DAGSTER_POSTGRES_DB: "postgres_db"
-    volumes: # Make docker client accessible so we can launch containers using host docker
+      AWS_ACCESS_KEY_ID: "yourAWSKeyID"
+      AWS_SECRET_ACCESS_KEY: "yourAWSSecretAccessKey"
+      DATABASE_IP: "192.168.136.166"
+      DATABASE_PORT: 5432
+      DATABASE_USER: "etl_user"
+      DATABASE_PASSWORD: "etl_password"
+      DATABASE_NAME: "etl_db"
+    volumes: # Make docker client accessible, so we can launch containers using host docker
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
     networks:

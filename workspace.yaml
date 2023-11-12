@@ -3,7 +3,7 @@ load_from:
   - grpc_server:
       host: pipeline_x
       port: 4000
-      location_name: "pipeline_x"
+      location_name: "pipeline-x"
   - grpc_server:
       host: pipeline_y
       port: 4047

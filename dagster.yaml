@@ -6,6 +6,7 @@ run_coordinator:
   module: dagster.core.run_coordinator
   class: QueuedRunCoordinator
 
+
 run_launcher:
   module: dagster_docker
   class: DockerRunLauncher
@@ -14,11 +15,19 @@ run_launcher:
       - DAGSTER_POSTGRES_USER
       - DAGSTER_POSTGRES_PASSWORD
       - DAGSTER_POSTGRES_DB
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - DATABASE_IP
+      - DATABASE_PORT
+      - DATABASE_USER
+      - DATABASE_PASSWORD
+      - DATABASE_NAME
     network: dagster_network
     container_kwargs:
       volumes: # Make docker client accessible to any launched containers as well
         - /var/run/docker.sock:/var/run/docker.sock
         - /tmp/io_manager_storage:/tmp/io_manager_storage
+        - /tmp/dagster-data:/opt/dagster/dagster_home/storage
 
 run_storage:
   module: dagster_postgres.run_storage
@@ -61,3 +70,13 @@ event_log_storage:
       db_name:
         env: DAGSTER_POSTGRES_DB
       port: 5432
+
+compute_logs:
+  module: dagster_aws.s3.compute_log_manager
+  class: S3ComputeLogManager
+  config:
+    bucket: "etl-dagster-data"
+    prefix: "compute-logs"
+    skip_empty_files: true
+    upload_interval: 30
+

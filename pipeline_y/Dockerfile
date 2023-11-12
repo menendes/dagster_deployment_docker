@@ -6,7 +6,9 @@ FROM python:3.10-slim
 RUN pip install \
     dagster \
     dagster-postgres \
-    dagster-docker
+    dagster-docker \
+    dagster-aws \
+    pandas
 
 # Add repository code
 
