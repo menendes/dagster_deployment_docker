@@ -1,13 +1,12 @@
 from dagster import schedule, Definitions, EnvVar
 from dagster_aws.s3 import S3Resource, S3PickleIOManager
-
-from dagster_docker import docker_executor
+from dagster_k8s import k8s_job_executor
 
 from pipeline_x.job.etl_pipeline import etl_op_graph
 from pipeline_x.resource.sql_alchemy import SqlAlchemyClientResource
 
 
-etl_pipeline = etl_op_graph.to_job(name="etl_pipeline_x", executor_def=docker_executor)
+etl_pipeline = etl_op_graph.to_job(name="etl_pipeline_x", executor_def=k8s_job_executor)
 
 
 @schedule(cron_schedule="* * * * *", job=etl_pipeline)
